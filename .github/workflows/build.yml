@@ -1,0 +1,21 @@
+---
+name: Build and test
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+          with:
+            node-version: '18.0'
+      - name: Install Dependencies
+        run: yarn install
+      - name: Lint
+        run: yarn lint
+      
