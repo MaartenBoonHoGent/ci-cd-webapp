@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  webapp:
+    image: my-node-app
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - webapp-database:/app/database
+    command: ["yarn", "start"]
+
+volumes:
+  webapp-database:

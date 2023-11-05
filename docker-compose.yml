@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  database:
+    image: mongo:4.4.6
+    ports:
+      - "27017:27017"
+    volumes:
+      - dbdata6:/data/db
+    networks:
+      - webapp-network
+
+  webapp:
+    image: lypsoty/webapp:latest
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URL=mongodb://database:27017
+    depends_on:
+      - database
+    networks:
+      - webapp-network
+    command: ["yarn", "start"]
+
+  tests:
+    image: my-node-app
+    build: .
+    environment:
+      - API_URL=http://192.168.56.20:3000
+    depends_on:
+      - webapp
+    command: ["yarn", "test"]
+volumes:
+  dbdata6:
+
+networks:
+  webapp-network:
+    driver: bridge
